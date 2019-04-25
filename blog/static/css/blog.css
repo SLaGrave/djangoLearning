@@ -23,6 +23,15 @@ label {
     color: #ffffff;
 }
 
+body {
+  counter-reset: section;
+}
+
+.player a::before {
+  counter-increment: section;
+  content: counter(section) ". ";
+}
+
 
 .date {
     color: #828282;
