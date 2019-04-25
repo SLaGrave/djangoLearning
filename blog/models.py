@@ -12,6 +12,18 @@ class Post(models.Model):
     def publish(self):
         self.published_date = timezone.now()
         self.save()
-    
+
     def __str__(self):
         return self.title
+
+class Player(models.Model):
+    alias = models.CharField(max_length=5, unique = True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    score = models.BigIntegerField(default=1000)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return self.name

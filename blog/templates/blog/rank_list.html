@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for player in players %}
+        <div class="player">
+            <label><a href="{% url 'player_detail' alias=player.alias %}">{{ player.name }} - {{ player.score }}</a></label>
+        </div>
+    {% endfor %}
+{% endblock %}
