@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.utils import timezone
-from .models import Post, Player
+from .models import Post, Player, Team
 from django.shortcuts import render, get_object_or_404
 
 def post_list(request):
@@ -13,7 +13,8 @@ def post_detail(request, pk):
 
 def rank_list(request):
     players = Player.objects.all().order_by('score').reverse()
-    return render(request, 'blog/rank_list.html', {'players': players})
+    teams = Team.objects.all().order_by('score').reverse()
+    return render(request, 'blog/rank_list.html', {'teams': teams, 'players': players})
 
 def player_detail(request, alias):
     player = get_object_or_404(Player, alias=alias)

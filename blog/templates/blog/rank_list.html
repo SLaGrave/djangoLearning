@@ -1,6 +1,12 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    {% for team in teams %}
+        <div class="team">
+          <h5>{{ team.name }} - {{ team.score }}</h5>
+        </div>
+    {% endfor %}
+    <hr/>
     {% for player in players %}
         <div class="player">
             <label><a href="{% url 'player_detail' alias=player.alias %}">{{ player.name }} - {{ player.score }}</a></label>

@@ -16,11 +16,19 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+class Team(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length = 50)
+    score = models.BigIntegerField(default=100)
+
 class Player(models.Model):
     alias = models.CharField(max_length=5, unique = True)
     name = models.CharField(max_length=100)
     email = models.EmailField()
     score = models.BigIntegerField(default=1000)
+    team = models.CharField(max_length=50, choices=(("Team #ForTheKids", "Team #ForTheKids"),
+    ("B-Rate Anime Club", "B-Rate Anime Club"),
+    ("Team Breaking Dustin's Back", "Team Breaking Dustin's Back")))
 
     def publish(self):
         self.save()
