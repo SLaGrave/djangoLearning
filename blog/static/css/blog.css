@@ -1,3 +1,11 @@
+label {
+    color: #000000;
+}
+
+.content label {
+  color: #000000;
+}
+
 .page-header {
     background-color: #9219b7;
     margin-top: 0;
@@ -16,11 +24,6 @@
 
 h1, h2, h3, h4 {
     font-family: 'Noto Sans JP', sans-serif;
-}
-
-
-label {
-    color: #ffffff;
 }
 
 body {

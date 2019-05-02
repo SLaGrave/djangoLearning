@@ -21,6 +21,13 @@ class Team(models.Model):
     name = models.CharField(max_length = 50)
     score = models.BigIntegerField(default=100)
 
+    def add(self, n):
+        self.score += n
+        self.save()
+    def sub(self, n):
+        self.score -= n
+        self.save()
+
 class Player(models.Model):
     alias = models.CharField(max_length=5, unique = True)
     name = models.CharField(max_length=100)
@@ -29,6 +36,13 @@ class Player(models.Model):
     team = models.CharField(max_length=50, choices=(("Team #ForTheKids", "Team #ForTheKids"),
     ("B-Rate Anime Club", "B-Rate Anime Club"),
     ("Team Breaking Dustin's Back", "Team Breaking Dustin's Back")))
+
+    def add(self, n):
+        self.score += n
+        self.save()
+    def sub(self, n):
+        self.score -= n
+        self.save()
 
     def publish(self):
         self.save()
