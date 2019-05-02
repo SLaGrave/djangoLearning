@@ -3,6 +3,7 @@ from django import forms
 from .models import Post, Player, Team
 
 class ReportForm(forms.Form):
+    password = forms.CharField(label='Password', max_length=10)
     title = forms.CharField(label='Title', max_length=200)
     c = forms.IntegerField(label='Complexity', max_value = 5, min_value=1)
     d = forms.IntegerField(label='Depth', max_value = 5, min_value=1)

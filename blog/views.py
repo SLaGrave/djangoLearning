@@ -22,6 +22,9 @@ def player_detail(request, alias):
     player = get_object_or_404(Player, alias=alias)
     return render(request, 'blog/player_detail.html', {'player': player})
 
+def error(request):
+    return render(request, 'blog/error.html')
+
 
 
 
@@ -36,13 +39,13 @@ def report(request):
             reportGame(form, request)
             return HttpResponseRedirect('/')
         else:
-            return HttpResponseRedirect('/reportError/')
+            return HttpResponseRedirect('/error/')
     else:
         form = ReportForm()
     return render(request, 'blog/report.html', {'form': form})
 
 def valiForm(form, request):
-    if form.is_valid():
+    if form.is_valid() and form['password'].data == "uahssg":
         for x in request.POST.getlist('winners'):
             for y in request.POST.getlist('losers'):
                 if x == y:
@@ -58,10 +61,10 @@ def reportGame(form, request):
     winVXP = 0
     # Simple calc
     for winner in request.POST.getlist('winners'):
-        Player.objects.all()[int(winner) - 1].add(100)
-        Team.objects.all().get(name=Player.objects.all()[int(winner) - 1].team).add(1)
+        Player.objects.all()[int(winner) - 1].add(max(omega*2, 1))
+        Team.objects.all().get(name=Player.objects.all()[int(winner) - 1].team).add(3)
     for loser in request.POST.getlist('losers'):
-        Player.objects.all()[int(loser) - 1].sub(100)
+        Player.objects.all()[int(loser) - 1].sub(max(omega, 1))
         Team.objects.all().get(name=Player.objects.all()[int(loser) - 1].team).sub(1)
 
 def calcOmega(c, d, _l, t):
