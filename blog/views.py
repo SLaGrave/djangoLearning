@@ -69,19 +69,13 @@ def reportGame(form, request):
         Player.objects.all()[int(winner) - 1].add(max(omega*2, 1))
         Team.objects.all().get(name=Player.objects.all()[int(winner) - 1].team).add(3)
         logStr = str(Player.objects.all()[int(winner) - 1]) + " add " + str(2 * omega) + " for winning " + str(form['title'].data)
-        if(omega < 100):
-            log.warning(logStr)
-        else:
-            log.error(logStr)
+        log.warning("===" + logStr)
 
     for loser in request.POST.getlist('losers'):
         Player.objects.all()[int(loser) - 1].sub(max(omega, 1))
         Team.objects.all().get(name=Player.objects.all()[int(loser) - 1].team).sub(1)
         logStr = str(Player.objects.all()[int(loser) - 1]) + " sub " + str(omega) + " for losing " + str(form['title'].data)
-        if(omega < 100):
-            log.warning(logStr)
-        else:
-            log.error(logStr)
+        log.warning("===" + logStr)
 
 def calcOmega(c, d, _l, t):
     c = int(c)

@@ -124,21 +124,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'handlers': {
         'file': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': 'debug.log',
         },
-        'mail': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-        },
     },
     'loggers': {
         'blog': {
-            'handlers': ['file', 'mail'],
+            'handlers': ['file'],
             'level': 'WARNING',
         },
     },
