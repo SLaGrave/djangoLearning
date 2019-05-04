@@ -5,6 +5,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from .forms import ReportForm
 
+# LOGGING
+import logging
+log = logging.getLogger(__name__)
+
+
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date').reverse()
     return render(request, 'blog/post_list.html', {'posts' : posts})
@@ -60,12 +65,23 @@ def reportGame(form, request):
     winSum = 0
     winVXP = 0
     # Simple calc
-    for winner in request.POST.getlist('winners'):
+    for winner in form['winners'].data:
         Player.objects.all()[int(winner) - 1].add(max(omega*2, 1))
         Team.objects.all().get(name=Player.objects.all()[int(winner) - 1].team).add(3)
+        logStr = str(Player.objects.all()[int(winner) - 1]) + " add " + str(2 * omega) + " for winning " + str(form['title'].data)
+        if(omega < 100):
+            log.warning(logStr)
+        else:
+            log.error(logStr)
+
     for loser in request.POST.getlist('losers'):
         Player.objects.all()[int(loser) - 1].sub(max(omega, 1))
         Team.objects.all().get(name=Player.objects.all()[int(loser) - 1].team).sub(1)
+        logStr = str(Player.objects.all()[int(loser) - 1]) + " sub " + str(omega) + " for losing " + str(form['title'].data)
+        if(omega < 100):
+            log.warning(logStr)
+        else:
+            log.error(logStr)
 
 def calcOmega(c, d, _l, t):
     c = int(c)

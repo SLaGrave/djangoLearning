@@ -9,5 +9,5 @@ class ReportForm(forms.Form):
     d = forms.IntegerField(label='Depth', max_value = 5, min_value=1)
     l = forms.IntegerField(label='Luck', max_value = 5, min_value=1)
     t = forms.IntegerField(label='Time', min_value=1)
-    winners = forms.ModelMultipleChoiceField(label='Winner(s)', widget=forms.CheckboxSelectMultiple, queryset = Player.objects.all())
+    winners = forms.ModelMultipleChoiceField(label='Winner(s)', widget=forms.CheckboxSelectMultiple, queryset = Player.objects.all().only("name"))
     losers = forms.ModelMultipleChoiceField(label='Loser(s)', widget=forms.CheckboxSelectMultiple, queryset = Player.objects.all())
