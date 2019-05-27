@@ -84,7 +84,7 @@ def reportGame(form, request):
     for winner in form['winners'].data:
         Player.objects.all()[int(winner) - 1].add(win_amount)
         team_list.add(Player.objects.all()[int(winner) - 1].team)
-        logStr = str(Player.objects.all()[int(winner) - 1]) + " add " + str(2 * omega) + " for winning " + str(form['title'].data)
+        logStr = str(Player.objects.all()[int(winner) - 1]) + " add " + str(win_amount) + " for winning " + str(form['title'].data)
         log.warning("===" + logStr)
     if(len(team_list) > 1):
         for winner in form['winners'].data:
