@@ -6,6 +6,6 @@ urlpatterns = [
     path('post/<int:pk>/', views.post_detail, name='post_detail'),
     path('ranks/', views.rank_list, name='rank_list'),
     path('ranks/<str:alias>', views.player_detail, name='player_detail'),
-    # path('report/', views.report, name='report'),
+    path('report/', views.report, name='report'),
     path('error/', views.error, name='error'),
 ]

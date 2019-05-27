@@ -1,3 +1,4 @@
+import math
 from django.shortcuts import render
 from django.utils import timezone
 from .models import Post, Player, Team
@@ -62,20 +63,35 @@ def valiForm(form, request):
 
 def reportGame(form, request):
     omega = calcOmega(form['c'].data, form['d'].data, form['l'].data, form['t'].data)
+    omega = math.ceil(omega)
     winSum = 0
     winVXP = 0
-    # Simple calc
-    for winner in form['winners'].data:
-        Player.objects.all()[int(winner) - 1].add(max(omega*2, 1))
-        Team.objects.all().get(name=Player.objects.all()[int(winner) - 1].team).add(3)
-        logStr = str(Player.objects.all()[int(winner) - 1]) + " add " + str(2 * omega) + " for winning " + str(form['title'].data)
-        log.warning("===" + logStr)
 
+    total_lost = 0
+    number_of_winners = len(form['winners'].data)
+
+    team_list = set()
+    # Simple calc
     for loser in request.POST.getlist('losers'):
-        Player.objects.all()[int(loser) - 1].sub(max(omega, 1))
-        Team.objects.all().get(name=Player.objects.all()[int(loser) - 1].team).sub(1)
+        Player.objects.all()[int(loser) - 1].sub(omega)
+        team_list.add(Player.objects.all()[int(loser) - 1].team)
         logStr = str(Player.objects.all()[int(loser) - 1]) + " sub " + str(omega) + " for losing " + str(form['title'].data)
         log.warning("===" + logStr)
+        total_lost += omega
+
+    # Calc winner amount
+    win_amount = math.ceil(min(total_lost/number_of_winners, 1))
+    for winner in form['winners'].data:
+        Player.objects.all()[int(winner) - 1].add(win_amount)
+        team_list.add(Player.objects.all()[int(winner) - 1].team)
+        logStr = str(Player.objects.all()[int(winner) - 1]) + " add " + str(2 * omega) + " for winning " + str(form['title'].data)
+        log.warning("===" + logStr)
+    if(len(team_list) > 1):
+        for winner in form['winners'].data:
+            Team.objects.all().get(name=Player.objects.all()[int(winner) - 1].team).add(3)
+        for loser in form['losers'].data:
+            Team.objects.all().get(name=Player.objects.all()[int(loser) - 1].team).sub(1)
+
 
 def calcOmega(c, d, _l, t):
     c = int(c)
@@ -93,6 +109,6 @@ def calcOmega(c, d, _l, t):
     elif _l == 4:
         l = 1/2
     else:
-        l == 1/3
+        l = 1/3
 
     return (c + d + t)*l
